@@ -54,4 +54,16 @@ export class UserStore {
             await pool.query(deleteUserWithId, [userID]);
         } catch (e) {}
     }
+
+    async addPoints(userID: string, points: number): Promise<number | undefined> {
+        const updateUserPoints =
+            'update general."User" u set points = u.points + $2 where u.id = $1;';
+
+        try {
+            await pool.query(updateUserPoints, [userID, points]);
+            return points;
+        } catch (e) {
+            return undefined;
+        }
+    }
 }
