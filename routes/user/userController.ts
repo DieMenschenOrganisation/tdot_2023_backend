@@ -20,9 +20,13 @@ export class UserController {
         })
 
         this.router.post("/", async (req: Request, res: Response) => {
-            console.log(req.body)
             const idOrError = await this.service.createUser(req.body as UserCreationData);
             sendResult(res, idOrError);
+        })
+
+        this.router.delete("/:userID?", async (req: Request, res: Response) => {
+            const okOrError = await this.service.removeUser(req.params.userID);
+            sendResult(res, okOrError);
         })
     }
 }

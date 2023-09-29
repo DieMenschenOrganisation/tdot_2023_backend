@@ -10,7 +10,7 @@ export class UserService {
         this.store = new UserStore();
     }
 
-    async getUser(userID: string|undefined): Promise<User | HttpError> {
+    async getUser(userID: string | undefined): Promise<User | HttpError> {
         if (userID === undefined) return new HttpError(400, "Didn't receive an user id!")
 
         const user = await this.store.getUserByID(userID);
@@ -20,7 +20,7 @@ export class UserService {
         return user;
     }
 
-    async createUser(userCreationData: UserCreationData): Promise<string |HttpError> {
+    async createUser(userCreationData: UserCreationData): Promise<string | HttpError> {
         if (userCreationData === undefined || userCreationData.name === undefined)
             return new HttpError(400, "Didn't pass the name for the user to create!")
 
@@ -31,5 +31,13 @@ export class UserService {
         if (id === undefined) return new HttpError(406, "Username isn't available any more!");
 
         return id;
+    }
+
+    async removeUser(userID: string | undefined): Promise<string | HttpError> {
+        if (userID === undefined) return new HttpError(400, "Didn't receive an user id!")
+
+        await this.store.deleteUserByID(userID);
+
+        return "ok";
     }
 }

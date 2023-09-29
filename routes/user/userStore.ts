@@ -43,4 +43,13 @@ export class UserStore {
             return undefined;
         }
     }
+
+    async deleteUserByID(userID: string) {
+        const deleteUserWithId =
+            'delete from general."User" u where u.id = $1;';
+
+        try {
+            await pool.query(deleteUserWithId, [userID]);
+        } catch (e) {}
+    }
 }
