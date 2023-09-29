@@ -6,6 +6,7 @@ import indexRouter from "./routes/index"
 import {UserController} from "./routes/user/userController"
 import {QrCodeController} from "./routes/qrCodes/qrCodeController";
 import {ScanController} from "./routes/scan/scanController";
+import cors from "cors"
 
 require('dotenv').config();
 
@@ -34,6 +35,7 @@ if (args.indexOf("prod") != -1) {
 initDB(dbIP, dbPort, dbUser, dbPassword);
 
 const app = express();
+app.use(cors())
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
