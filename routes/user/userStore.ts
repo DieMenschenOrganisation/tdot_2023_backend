@@ -9,6 +9,7 @@ export class UserStore {
 
         try {
             const users: QueryResult<User> = await pool.query(selectUserByID, [userID])
+            if (users.rows.length !== 1) return undefined;
             return users.rows[0];
         } catch (e) {
             console.log(e)
@@ -22,6 +23,7 @@ export class UserStore {
 
         try {
             const users: QueryResult<User> = await pool.query(selectUserByName, [name]);
+            if (users.rows.length !== 1) return undefined;
             return users.rows[0];
         } catch (e) {
             console.log(e)

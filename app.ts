@@ -4,6 +4,7 @@ import logger from "morgan";
 import {initDB} from "./db";
 import indexRouter from "./routes/index"
 import {UserController} from "./routes/user/userController"
+import {QrCodeController} from "./routes/qrCodes/qrCodeController";
 
 require('dotenv').config();
 
@@ -38,6 +39,7 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use("/user", new UserController().router);
+app.use("/qr", new QrCodeController().router);
 
 app.listen(servePort, "0.0.0.0", () => {
     console.log(`Server listening on port ${servePort}!`)
