@@ -1,27 +1,45 @@
-import {Client} from "ts-postgres";
-import { getClient } from "../../db";
+import { pool } from "../../db";
 import {User} from "./user";
-import {HttpError} from "../../utils/httpError";
+import {QueryResult} from "pg";
 
 export class UserStore {
-    private client: Client;
+    async getUserByID(userID: string): Promise<User | undefined> {
+        const selectUserByID =
+            'select * from general."User" u where u.id = $1';
 
-    constructor() {
-        this.client = getClient();
+        try {
+            const users: QueryResult<User> = await pool.query(selectUserByID, [userID])
+            return users.rows[0];
+        } catch (e) {
+            console.log(e)
+            return undefined;
+        }
     }
 
-    async getUser(userID: string): Promise<User | undefined> {
-        const selectUser = 'select * from general."User" u where u.id = $1';
-        console.log("a")
-        try {
-            const result = await this.client.query(
-                selectUser,
-                [userID],
-            );
-            console.log("b")
+    async getUserByName(name: string): Promise<User | undefined> {
+        const selectUserByName =
+            'select * from general."User" u where u.name = $1';
 
-            console.log(result)
+        try {
+            const users: QueryResult<User> = await pool.query(selectUserByName, [name]);
+            return users.rows[0];
         } catch (e) {
+            console.log(e)
+            return undefined;
+        }
+    }
+
+    async createDefaultUser(name: string): Promise<string | undefined> {
+        const putUserWithName =
+            'insert into general."User" (name) values ($1);';
+
+        try {
+            await pool.query(putUserWithName, [name]);
+            const user = await this.getUserByName(name);
+            if (user === undefined) return undefined;
+            return user.id;
+        } catch (e) {
+            console.log(e)
             return undefined;
         }
     }

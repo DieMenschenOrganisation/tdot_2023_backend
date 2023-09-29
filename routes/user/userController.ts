@@ -1,7 +1,7 @@
 import express, {Response, Request, Router} from "express";
 import {UserService} from "./userService";
-import {HttpError} from "../../utils/httpError";
 import {sendResult} from "../../utils/resolver";
+import {UserCreationData} from "./userCreationData";
 
 export class UserController {
     router: Router;
@@ -17,6 +17,12 @@ export class UserController {
         this.router.get("/:userID?", async (req: Request, res: Response) => {
             const userOrError = await this.service.getUser(req.params.userID)
             sendResult(res, userOrError);
+        })
+
+        this.router.post("/", async (req: Request, res: Response) => {
+            console.log(req.body)
+            const idOrError = await this.service.createUser(req.body as UserCreationData);
+            sendResult(res, idOrError);
         })
     }
 }

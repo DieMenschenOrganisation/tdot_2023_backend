@@ -1,6 +1,9 @@
-import express  from 'express';
+import express from 'express';
+import bodyParser from "body-parser";
 import logger from "morgan";
 import {initDB} from "./db";
+import indexRouter from "./routes/index"
+import {UserController} from "./routes/user/userController"
 
 require('dotenv').config();
 
@@ -26,13 +29,12 @@ if (args.indexOf("prod") != -1) {
     dbPassword = "test";
 }
 
-initDB(dbIP,dbPort,dbUser,dbPassword);
-
-import indexRouter from "./routes/index"
-import { UserController } from "./routes/user/userController"
+initDB(dbIP, dbPort, dbUser, dbPassword);
 
 const app = express();
 app.use(logger('dev'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use("/user", new UserController().router);
