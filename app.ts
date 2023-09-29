@@ -29,11 +29,13 @@ if (args.indexOf("prod") != -1) {
 initDB(dbIP,dbPort,dbUser,dbPassword);
 
 import indexRouter from "./routes/index"
+import { UserController } from "./routes/user/userController"
 
 const app = express();
 app.use(logger('dev'));
 
 app.use('/', indexRouter);
+app.use("/user", new UserController().router);
 
 app.listen(servePort, "0.0.0.0", () => {
     console.log(`Server listening on port ${servePort}!`)
