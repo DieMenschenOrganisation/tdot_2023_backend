@@ -1,7 +1,7 @@
-import express from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import bodyParser from "body-parser";
 import logger from "morgan";
-import {initDB} from "./db";
+import {initDB, pool} from "./db";
 import indexRouter from "./routes/index"
 import {UserController} from "./routes/user/userController"
 import {QrCodeController} from "./routes/qrCodes/qrCodeController";
@@ -41,6 +41,16 @@ app.use(cors())
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // TODO Kinda scuffed way to check if db is reachable!
+        await pool.query("select NOW()");
+        next()
+    } catch (e) {
+        res.status(503).send("Database not reachable!");
+    }
+})
 
 app.use('/', indexRouter);
 app.use("/user", new UserController().router);
