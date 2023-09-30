@@ -21,7 +21,7 @@ let dbUser: string;
 let dbPassword: string;
 
 if (args.indexOf("prod") != -1) {
-    servePort = 80;
+    servePort = 8000;
     dbIP = process.env.PROD_DB_IP as string;
     dbPort = process.env.PROD_DB_PORT as unknown as number;
     dbUser = process.env.PROD_DB_USER as string;
