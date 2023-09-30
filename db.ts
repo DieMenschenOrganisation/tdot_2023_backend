@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import {Pool} from "pg";
 
 export let pool: Pool;
 export function initDB(hostIP: string, hostPort: number, dbUser: string, dbPassword: string) {
@@ -8,5 +8,12 @@ export function initDB(hostIP: string, hostPort: number, dbUser: string, dbPassw
         user: dbUser,
         password: dbPassword,
         database: "tdot_casino",
+    })
+
+    pool.connect().then(_ => {
+        console.log("Connected to database!");
+    }).catch(_ => {
+        console.error("Failed to connect to database!");
+        process.exit(0);
     })
 }
