@@ -10,10 +10,10 @@ export class QrCodeService {
     }
 
     async getQrCode(qrID: string | undefined): Promise<QrCode | HttpError> {
-        if (qrID === undefined) return new HttpError(400, "No qr id received!");
+        if (qrID === undefined) return new HttpError(400, "Es wurde keine QR-Code-ID übergeben!");
 
         const qrCode = await this.store.getQrCodeByID(qrID);
-        if (qrCode === undefined) return new HttpError(406, "No qr-code found with that id!");
+        if (qrCode === undefined) return new HttpError(406, "Es gibt keinen QR-Code mit dieser ID!");
 
         return qrCode;
     }

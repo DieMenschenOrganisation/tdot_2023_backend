@@ -34,8 +34,8 @@ create table  general."QrCode"
 
 create table general."Scanned"
 (
-    user_id    uuid not null,
-    qr_code_id uuid not null,
+    user_id    uuid not null references general."User"(id) on delete cascade ,
+    qr_code_id uuid not null references general."QrCode"(id) on delete cascade ,
     constraint "Scanned_pk"
         primary key (user_id, qr_code_id)
 );

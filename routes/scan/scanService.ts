@@ -17,7 +17,7 @@ export class ScanService {
 
     async canRedeem(userID: string, qrID: string): Promise<string | HttpError> {
         const scannedEntry = await this.scannedStore.getByIds(userID, qrID);
-        if (scannedEntry !== undefined) return new HttpError(417, "Qr-Code was already scanned!");
+        if (scannedEntry !== undefined) return new HttpError(417, "Der QR-Code wurde bereits eingescannt!");
 
         return "ok";
     }
@@ -27,13 +27,13 @@ export class ScanService {
         if (canRedeem instanceof HttpError) return canRedeem;
 
         const qrCode = await this.qrCodeStore.getQrCodeByID(qrID);
-        if (qrCode === undefined) return new HttpError(404, "The scanned Qr-Code doesn't exist!");
+        if (qrCode === undefined) return new HttpError(404, "Dieser eingescannte QR-Code existiert nicht!");
 
         const points = await this.userStore.addPoints(userID, qrCode.points);
-        if (points === undefined) return new HttpError(404, "The user to add doesn't exist!");
+        if (points === undefined) return new HttpError(404, "Der übergeben Nutzer existiert nicht!");
 
         const scannedEntry = await this.scannedStore.createScannedEntry(userID, qrID);
-        if (scannedEntry === undefined) return new HttpError(500, "Failed to create scanned entry");
+        if (scannedEntry === undefined) return new HttpError(500, "Der Server ist dabei fehlgeschlagen einen Beziehung zu erstellen!");
 
         return points;
     }
