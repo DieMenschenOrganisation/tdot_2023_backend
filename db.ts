@@ -7,7 +7,7 @@ export function initDB(hostIP: string, hostPort: number, dbUser: string, dbPassw
         port: hostPort,
         user: dbUser,
         password: dbPassword,
-        database: "tdot_casino",
+        database: "admin",
     })
 
     pool.connect().then(_ => {
