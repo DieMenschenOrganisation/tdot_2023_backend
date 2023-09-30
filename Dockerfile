@@ -3,4 +3,4 @@ WORKDIR app
 COPY package.json ./
 RUN bun i
 COPY . .
-CMD ["bun", "run", "dev"]
+CMD ["bun", "run", "prod"]
