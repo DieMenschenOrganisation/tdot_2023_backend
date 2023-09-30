@@ -34,6 +34,11 @@ if (args.indexOf("prod") != -1) {
     dbPassword = "test";
 }
 
+console.log(dbIP);
+console.log(dbPort);
+console.log(dbUser);
+console.log(dbPassword);
+
 initDB(dbIP, dbPort, dbUser, dbPassword);
 
 const app = express();
