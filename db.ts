@@ -12,7 +12,8 @@ export function initDB(hostIP: string, hostPort: number, dbUser: string, dbPassw
 
     pool.connect().then(_ => {
         console.log("Connected to database!");
-    }).catch(reason => {
-        console.log(reason);
+    }).catch(_reason => {
+        console.log("Failed to connect to database!");
+        process.exit(0);
     })
 }
