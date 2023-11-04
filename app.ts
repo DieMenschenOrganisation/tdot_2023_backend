@@ -9,6 +9,9 @@ import {ScanController} from "./routes/scan/scanController";
 import cors from "cors"
 import fs from "fs";
 import https from "https";
+import {Server} from "socket.io";
+import {RegisterController} from "./routes/register/RegisterController";
+import {RequestController} from "./routes/request/RequestController";
 
 require('dotenv').config();
 
@@ -61,14 +64,23 @@ app.use('/', indexRouter);
 app.use("/user", new UserController().router);
 app.use("/qr", new QrCodeController().router);
 app.use("/scan", new ScanController().router);
-
-app.get("*", (req, res) => {})
+app.use("/request", new RequestController().router)
 
 let credentials = {
     key: fs.readFileSync("backend-privateKey.key"),
     cert: fs.readFileSync("backend.crt"),
 }
 
-https.createServer(credentials, app).listen(servePort, "0.0.0.0" || "localhost", () => {
+const server = https.createServer(credentials, app).listen(servePort, "0.0.0.0" || "localhost", () => {
     console.log(`Server listening on port ${servePort}!`)
+})
+
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+io.on("connect", socket => {
+    new RegisterController(socket);
 })

@@ -1,7 +1,7 @@
 import express, {Response, Request, Router} from "express";
 import {UserService} from "./userService";
-import {sendResult} from "../../utils/resolver";
 import {UserCreationData} from "./userCreationData";
+import {sendHttpResult} from "../../utils/resolver";
 
 export class UserController {
     router: Router;
@@ -16,22 +16,22 @@ export class UserController {
     private init() {
         this.router.get("/points/:userID?", async (req: Request, res: Response) => {
             const pointsOrError = await this.service.getUserPoints(req.params.userID);
-            sendResult(res, pointsOrError);
+            sendHttpResult(res, pointsOrError);
         });
 
         this.router.get("/:userID?", async (req: Request, res: Response) => {
             const userOrError = await this.service.getUser(req.params.userID)
-            sendResult(res, userOrError);
+            sendHttpResult(res, userOrError);
         })
 
         this.router.post("/", async (req: Request, res: Response) => {
             const idOrError = await this.service.createUser(req.body as UserCreationData);
-            sendResult(res, idOrError);
+            sendHttpResult(res, idOrError);
         })
 
         this.router.delete("/:userID?", async (req: Request, res: Response) => {
             const okOrError = await this.service.removeUser(req.params.userID);
-            sendResult(res, okOrError);
+            sendHttpResult(res, okOrError);
         })
     }
 }

@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {ScanService} from "./scanService";
-import {sendResult} from "../../utils/resolver";
+import {sendHttpResult} from "../../utils/resolver";
 
 export class ScanController {
     router: Router;
@@ -15,7 +15,7 @@ export class ScanController {
     private init() {
         this.router.get("/canRedeem/:userID&:qrID", async (req: Request, res: Response) => {
             const okOrError = await this.service.canRedeem(req.params.userID, req.params.qrID);
-            sendResult(res, okOrError);
+            sendHttpResult(res, okOrError);
         })
         this.router.get("/canRedeem/*", (_req: Request, res: Response) => {
             res.status(400).send("No user or qr-code id passed!");
@@ -23,7 +23,7 @@ export class ScanController {
 
         this.router.get("/redeem/:userID&:qrID", async (req: Request, res: Response) => {
             const pointsOrError = await this.service.redeem(req.params.userID, req.params.qrID);
-            sendResult(res, pointsOrError);
+            sendHttpResult(res, pointsOrError);
         })
         this.router.get("/redeem/*", (_req: Request, res: Response) => {
             res.status(400).send("No user or qr-code id passed!");
