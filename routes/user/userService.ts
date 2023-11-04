@@ -48,7 +48,6 @@ export class UserService {
     }
 
     async redeemPoints(userID: string, points: string): Promise<null | HttpError> {
-        console.log(userID);
         const pointsAmount = Number(points);
         if (isNaN(pointsAmount)) return new HttpError(400, "Invalid amount of points passed!");
 

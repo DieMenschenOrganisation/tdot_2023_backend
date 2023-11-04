@@ -14,7 +14,7 @@ export class UserController {
     }
 
     private init() {
-        this.router.get("/points/:userID?", async (req: Request, res: Response) => {
+        this.router.get("/points/get/:userID?", async (req: Request, res: Response) => {
             const pointsOrError = await this.service.getUserPoints(req.params.userID);
             sendHttpResult(res, pointsOrError);
         });
