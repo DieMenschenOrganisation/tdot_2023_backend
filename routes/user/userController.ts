@@ -14,6 +14,11 @@ export class UserController {
     }
 
     private init() {
+        this.router.get("/all", async (req: Request, res: Response) => {
+            const usersOrError = await this.service.getAllUsers();
+            sendHttpResult(res, usersOrError);
+        })
+
         this.router.get("/points/get/:userID?", async (req: Request, res: Response) => {
             const pointsOrError = await this.service.getUserPoints(req.params.userID);
             sendHttpResult(res, pointsOrError);
@@ -39,9 +44,6 @@ export class UserController {
            sendHttpResult(res, okOrError)
         });
 
-        this.router.get("/all", async (req: Request, res: Response) => {
-            const usersOrError = await this.service.getAllUsers();
-            sendHttpResult(res, usersOrError);
-        })
+
     }
 }
