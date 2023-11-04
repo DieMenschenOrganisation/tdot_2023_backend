@@ -14,6 +14,11 @@ export class UserController {
     }
 
     private init() {
+        this.router.get("/points/:userID?", async (req: Request, res: Response) => {
+            const pointsOrError = await this.service.getUserPoints(req.params.userID);
+            sendResult(res, pointsOrError);
+        });
+
         this.router.get("/:userID?", async (req: Request, res: Response) => {
             const userOrError = await this.service.getUser(req.params.userID)
             sendResult(res, userOrError);

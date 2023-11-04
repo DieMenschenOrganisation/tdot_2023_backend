@@ -40,4 +40,10 @@ export class UserService {
 
         return "ok";
     }
+
+    async getUserPoints(userID: string): Promise<number | HttpError> {
+        const user = await this.getUser(userID);
+        if (user instanceof HttpError) return user;
+        return user.points;
+    }
 }
