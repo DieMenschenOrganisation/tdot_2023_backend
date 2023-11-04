@@ -1,7 +1,7 @@
 import express, {Response, Request, Router} from "express";
 import {UserService} from "./userService";
 import {UserCreationData} from "./userCreationData";
-import {sendHttpResult} from "../../utils/resolver";
+import {replaceIfNull, sendHttpResult} from "../../utils/resolver";
 
 export class UserController {
     router: Router;
@@ -31,7 +31,12 @@ export class UserController {
 
         this.router.delete("/:userID?", async (req: Request, res: Response) => {
             const okOrError = await this.service.removeUser(req.params.userID);
-            sendHttpResult(res, okOrError);
+            sendHttpResult(res, replaceIfNull(okOrError, "ok"));
         })
+
+        this.router.get("/points/redeem", async (req: Request, res: Response) => {
+           const okOrError = await this.service.redeemPoints(req.query.userID as string, req.query.points as string);
+           sendHttpResult(res, okOrError)
+        });
     }
 }

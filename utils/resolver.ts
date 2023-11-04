@@ -15,3 +15,8 @@ export function sendWSErrorIfPresent(socket: Socket, error: WSError|null) {
     if (error == null) return;
     socket.emit("error", error.message);
 }
+
+export function replaceIfNull<T,K>(value: T|null, replacement: K): T|K {
+    if (value == null) return replacement;
+    return value;
+}

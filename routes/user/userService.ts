@@ -33,17 +33,30 @@ export class UserService {
         return id;
     }
 
-    async removeUser(userID: string | undefined): Promise<string | HttpError> {
+    async removeUser(userID: string | undefined): Promise<null | HttpError> {
         if (userID === undefined) return new HttpError(400, "Es wurde keine Nutzer-ID übergeben!")
 
         await this.store.deleteUserByID(userID);
 
-        return "ok";
+        return null;
     }
 
     async getUserPoints(userID: string): Promise<number | HttpError> {
         const user = await this.getUser(userID);
         if (user instanceof HttpError) return user;
         return user.points;
+    }
+
+    async redeemPoints(userID: string, points: string): Promise<null | HttpError> {
+        const pointsAmount = Number(points);
+        if (isNaN(pointsAmount)) return new HttpError(400, "Invalid amount of points passed!");
+
+        const userOrError = await this.getUser(userID);
+        if (userOrError instanceof HttpError) return userOrError;
+
+        if (userOrError.points < pointsAmount) return new HttpError(400, "User doesnt have enought points!");
+        await this.store.addPoints(userID, -pointsAmount);
+
+        return null;
     }
 }
