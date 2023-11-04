@@ -62,7 +62,7 @@ app.use("/user", new UserController().router);
 app.use("/qr", new QrCodeController().router);
 app.use("/scan", new ScanController().router);
 
-app.get("*", (req, res) => {})
+app.get("*", (req, res) => {res.send("Moin");})
 
 let credentials = {
     key: fs.readFileSync("backend-privateKey.key"),
