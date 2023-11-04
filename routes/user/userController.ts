@@ -38,5 +38,10 @@ export class UserController {
            const okOrError = await this.service.redeemPoints(req.query.userID as string, req.query.points as string);
            sendHttpResult(res, okOrError)
         });
+
+        this.router.get("/all", async (req: Request, res: Response) => {
+            const usersOrError = await this.service.getAllUsers();
+            sendHttpResult(res, usersOrError);
+        })
     }
 }

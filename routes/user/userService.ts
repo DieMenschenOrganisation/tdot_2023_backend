@@ -59,4 +59,8 @@ export class UserService {
 
         return null;
     }
+
+    async getAllUsers(): Promise<User[]> {
+        return this.store.getAllUsers();
+    }
 }

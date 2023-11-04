@@ -66,4 +66,10 @@ export class UserStore {
             return undefined;
         }
     }
+
+    async getAllUsers(): Promise<User[]> {
+        const getAllUsers = 'select * from general."User"';
+
+        return (await pool.query(getAllUsers)).rows;
+    }
 }
