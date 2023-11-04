@@ -14,6 +14,8 @@ export class RegisterService {
     }
 
     register(code: string): WSError|null {
+        this.removeRegistry();
+
         const error = this.registryService.register(code, this.socket);
         if (error != null) return new WSError(error.type);
         this.registeredCode = code;
