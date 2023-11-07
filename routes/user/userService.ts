@@ -63,4 +63,16 @@ export class UserService {
     async getAllUsers(): Promise<User[]> {
         return this.store.getAllUsers();
     }
+
+    async changeUserPoints(userID: string, points: string): Promise<null|HttpError> {
+        let pointsNumber = Number(points);
+        if (isNaN(pointsNumber)) return new HttpError(400,"Invalid points passed!");
+
+        let userOrError = await this.getUser(userID);
+        if (userOrError instanceof HttpError) return userOrError;
+
+        await this.store.addPoints(userID, pointsNumber);
+
+        return null;
+    }
 }

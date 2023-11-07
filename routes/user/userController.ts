@@ -24,6 +24,11 @@ export class UserController {
             sendHttpResult(res, okOrError)
         });
 
+        this.router.get("/points/change", async (req: Request, res: Response) => {
+            const okOrError = await this.service.changeUserPoints(req.query.userID as string, req.query.points as string);
+            sendHttpResult(res, okOrError);
+        })
+
         this.router.get("/points/:userID?", async (req: Request, res: Response) => {
             const pointsOrError = await this.service.getUserPoints(req.params.userID);
             sendHttpResult(res, pointsOrError);
